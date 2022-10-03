@@ -2,7 +2,7 @@
 The plot.sh file is bash script that produces the Collatz sequence plots. This
 script produces plots similar to the given figures 2, 3, and 4.
 
-## Complie
+## Compile
 $make
 
 $chmod -x plot.sh
