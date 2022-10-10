@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
     if (opt_s == true) { //printing the table with x, sin, library value, difference 
        printf("  x\t      sin\t       Library\t     Difference\n");
        printf("  -\t      ----\t       -------\t     -----------\n");
-       for (double x=0.0; x<2*M_PI;x+= 0.05*M_PI){
+       for (double x=0.0; x <= 2*M_PI;x+= 0.05*M_PI){
             difference = (my_sin(x)-sin(x));
             printf(" %7.4lf % 16.9lf % 16.9lf % 16.12lf\n",x,my_sin(x),sin(x),difference);
        }
@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
     if (opt_c == true) {
         printf("  x\t      cos\t       Library\t     Difference\n");
         printf("  -\t      ----\t       -------\t     -----------\n");
-        for (double x=0.0; x<2*M_PI;x+= 0.05*M_PI){
+        for (double x=0.0; x <= 2*M_PI;x+= 0.05*M_PI){
             difference = (my_cos(x)-cos(x));
             printf(" %7.4lf % 16.9lf % 16.9lf % 16.12lf\n",x,my_cos(x),cos(x),difference);
        }
