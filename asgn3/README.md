@@ -12,7 +12,7 @@ top known as a dreidel.
  6. DESIGN.pdf: Describe the purpose of your program and communicate the overall design of  the program with enough detail
  7. WRITEUP.pdf: Discussion of the results of my tests.
  8. Mtrand.h: Provided in asgn3-files.tgz.
- 9. Mtrand.c: Provided in asgn3-files.tgz. 
+ 9. Mtrand.c: Provided in asgn3-files.tgz 
 
 
 
