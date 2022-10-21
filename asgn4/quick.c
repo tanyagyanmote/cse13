@@ -21,6 +21,9 @@ void quick_sort(Stats *stats, uint32_t *arr, uint32_t n_elements){
         while(cmp(stats,pivot,arr[l]) == 1 || arr[l] == pivot){
             l += 1;
         }
+        if (l == n_elements) {
+            return;
+        }
         while(cmp(stats,pivot,arr[r]) == -1){
             r -= 1;
         }
