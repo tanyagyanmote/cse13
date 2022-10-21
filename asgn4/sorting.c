@@ -75,25 +75,24 @@ int main(int argc, char **argv) {
                 default_seed = strtoul(optarg,NULL,10); 
                 break;
             case 'n':
-                //default_num = atoi(optarg); 
-                if(atoi(optarg) > 250000000 || atoi(optarg) < 1){
+                if(atoi(optarg) <= 250000000 && atoi(optarg) >= 1){
                     default_num = atoi(optarg);
                 }
                 break;
             case 'p':
-                default_elements = atoi(optarg);
-                if(default_num < default_elements){
-                    default_num = default_elements;
-                }
+                default_elements = strtoul(optarg,NULL,10); 
                 break;
             case 'H':
                 (print_h());
                 return 1;
-                break;
             default: 
-                print_h();
+                (print_h());
                 return 1;
         }
+    }
+
+    if(default_num < default_elements){
+        default_elements = default_num;
     }
     
     if (set_member(emp_set, 2)) {
@@ -102,12 +101,15 @@ int main(int argc, char **argv) {
         bubble_sort(stats, arr, default_num);
         uint32_t temp = 0;
         printf("Bubble Sort, %u elements, %lu moves, %lu compares\n", default_num, stats->moves, stats->compares); 
-        for (uint32_t i = 0; i < default_num; i++) {
+        for (uint32_t i = 0; i < default_elements; i++) {
             printf("%13" PRIu32, arr[i]);
             temp += 1;
             if (temp % 5 == 0) {
                 printf("\n");
             }
+        }
+        if (temp == default_num){
+            printf("\n");
         }
     }
 
@@ -118,12 +120,16 @@ int main(int argc, char **argv) {
         uint32_t temp = 0;
         printf("Heap Sort, %u elements, %lu moves, %lu compares\n", default_num, stats->moves, stats->compares); 
         
-        for (uint32_t i = 0; i < default_num; i++) {
+        for (uint32_t i = 0; i < default_elements; i++) {
             printf("%13" PRIu32, arr[i]);
             temp += 1;
             if (temp % 5 == 0) {
                 printf("\n");
             }
+            
+        }
+        if (temp == default_num){
+            printf("\n");
         }
     }
 
@@ -133,12 +139,15 @@ int main(int argc, char **argv) {
         quick_sort(stats, arr, default_num);
         uint32_t temp = 0;
         printf("Quick Sort, %u elements, %lu moves, %lu compares\n", default_num, stats->moves, stats->compares); 
-        for (uint32_t i = 0; i < default_num; i++) {
+        for (uint32_t i = 0; i < default_elements; i++) {
             printf("%13" PRIu32, arr[i]);
             temp += 1;
             if (temp % 5 == 0) {
                 printf("\n");
             }
+        }
+        if (temp == default_num){
+            printf("\n");
         }
     }
 
@@ -148,12 +157,15 @@ int main(int argc, char **argv) {
         shell_sort(stats, arr, default_num);
         uint32_t temp = 0;
         printf("Shell Sort, %u elements, %lu moves, %lu compares\n", default_num, stats->moves, stats->compares); 
-        for (uint32_t i = 0; i < default_num; i++) {
+        for (uint32_t i = 0; i < default_elements; i++) {
             printf("%13" PRIu32, arr[i]);
             temp += 1;
             if (temp % 5 == 0) {
                 printf("\n");
             }
+        }
+        if (temp == default_num){
+            printf("\n");
         }
     }
 
@@ -166,3 +178,4 @@ int main(int argc, char **argv) {
     // }
 
 }
+
