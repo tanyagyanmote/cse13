@@ -75,21 +75,24 @@ int main(int argc, char **argv) {
                 default_seed = strtoul(optarg,NULL,10); 
                 break;
             case 'n':
-                default_num = atoi(optarg); 
-                if(default_num <= 250000000 && default_num >= 1){
-                    break; 
+                //default_num = atoi(optarg); 
+                if(atoi(optarg) > 250000000 || atoi(optarg) < 1){
+                    default_num = atoi(optarg);
                 }
+                break;
             case 'p':
                 default_elements = atoi(optarg);
                 if(default_num < default_elements){
                     default_num = default_elements;
-                    break;
                 }
                 break;
             case 'H':
                 (print_h());
                 return 1;
-            default: return 1;
+                break;
+            default: 
+                print_h();
+                return 1;
         }
     }
     
@@ -121,9 +124,7 @@ int main(int argc, char **argv) {
             if (temp % 5 == 0) {
                 printf("\n");
             }
-            
         }
-
     }
 
     if (set_member(emp_set, 3)) {
