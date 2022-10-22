@@ -108,7 +108,7 @@ int main(int argc, char **argv) {
                 printf("\n");
             }
         }
-        if (temp == default_num){
+        if (temp % 5 != 0){
             printf("\n");
         }
     }
@@ -128,7 +128,7 @@ int main(int argc, char **argv) {
             }
             
         }
-        if (temp == default_num){
+        if (temp % 5 != 0){
             printf("\n");
         }
     }
@@ -146,7 +146,7 @@ int main(int argc, char **argv) {
                 printf("\n");
             }
         }
-        if (temp == default_num){
+        if (temp % 5 != 0){
             printf("\n");
         }
     }
@@ -164,7 +164,7 @@ int main(int argc, char **argv) {
                 printf("\n");
             }
         }
-        if (temp == default_num){
+        if (temp % 5 != 0){
             printf("\n");
         }
     }
@@ -178,4 +178,3 @@ int main(int argc, char **argv) {
     // }
 
 }
-
