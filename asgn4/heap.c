@@ -51,7 +51,7 @@ void down_heap(Stats *stats, uint32_t *arr, uint32_t heap_size){
 uint32_t* build_heap(Stats *stats, uint32_t *arr, uint32_t n_elements){
     uint32_t *heap = (uint32_t *)calloc(n_elements,sizeof(uint32_t));
     for(uint32_t n =0; n < n_elements; n+=1){
-        heap[n] = move(stats, arr[n]);
+        heap[n] = move(stats,move(stats, arr[n]));
         up_heap(stats, heap,n);
     }
     return heap;
@@ -59,14 +59,16 @@ uint32_t* build_heap(Stats *stats, uint32_t *arr, uint32_t n_elements){
 
 void heap_sort(Stats *stats, uint32_t *arr, uint32_t n_elements){
     uint32_t *heap = (build_heap(stats,arr,n_elements));
+    //uint32_t *sorted_list = (uint32_t *)calloc(n_elements,sizeof(uint32_t));
     for(uint32_t n =0; n < n_elements; n+=1){
-        arr[n] = move(stats, heap[0]);
-        heap[0] = move(stats,heap[n_elements-n-1]);
+        arr[n] = move(stats,move(stats, heap[0]));
+        heap[0] = move(stats,move(stats,heap[n_elements-n-1]));
         down_heap(stats,heap,n_elements-n);
     }
     free(heap);
 
 }
+
 
 
 
