@@ -78,13 +78,17 @@ int main(int argc, char **argv) {
                 if(atoi(optarg) <= 250000000 && atoi(optarg) >= 1){
                     default_num = atoi(optarg);
                 }
+                else{
+                    print_h();
+                    return 1;
+                }
                 break;
             case 'p':
                 default_elements = strtoul(optarg,NULL,10); 
                 break;
             case 'H':
                 (print_h());
-                return 1;
+                return 0;
             default: 
                 (print_h());
                 return 1;
