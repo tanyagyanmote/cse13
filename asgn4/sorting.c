@@ -16,21 +16,21 @@
 
 void print_h(){
     printf("SYNOPSIS\n");
-    printf("   A collection of comparison-based sorting algorithms. \n");
+    printf("   A collection of comparison-based sorting algorithms.\n");
     printf("\n");
     printf("USAGE\n");
     printf("   ./sorting [-Hasbhq] [-n length] [-p elements] [-r seed]\n");
     printf("\n");
     printf("OPTIONS\n");
-    printf("   -H            Display program help and usage.\n");
-    printf("   -a            Enable all sorts.\n");
-    printf("   -b            Enable Bubble Sort.\n");
-    printf("   -h            Enable Heap Sort.\n");
-    printf("   -q            Enable Quick Sort.\n");
-    printf("   -s            Enable Shell Sort.\n");
-    printf("   -n length     Specify number of array elements (default: 100).\n");
-    printf("   -p elements   Specify number of elements to print (default: 100).\n");
-    printf("   -r seed       Specify random seed (default: 13371453).\n");
+    printf("   -H              Display program help and usage.\n");
+    printf("   -a              Enable all sorts.\n");
+    printf("   -b              Enable Bubble Sort.\n");
+    printf("   -h              Enable Heap Sort.\n");
+    printf("   -q              Enable Quick Sort.\n");
+    printf("   -s              Enable Shell Sort.\n");
+    printf("   -n length       Specify number of array elements (default: 100).\n");
+    printf("   -p elements     Specify number of elements to print (default: 100).\n");
+    printf("   -r seed         Specify random seed (default: 13371453).\n");
 
 }
 
