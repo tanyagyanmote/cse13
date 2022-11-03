@@ -14,12 +14,12 @@
 #define OPTIONS "i:o:n:vh"
 
 void print_h(){
-    printf("Usage: ./decrypt-dist [options]\n");
-    printf("  ./decrypt-dist decrypts an input file using the specified private key file,\n");
+    printf("Usage: ./encrypt-dist [options]\n");
+    printf("  ./encrypt-dist encrypts an input file using the specified public key file,\n");
     printf("  writing the result to the specified output file.\n");
     printf("    -i <infile> : Read input from <infile>. Default: standard input.\n");
     printf("    -o <outfile>: Write output to <outfile>. Default: standard output.\n");
-    printf("    -n <keyfile>: Private key is in <keyfile>. Default: rsa.priv.\n");
+    printf("    -n <keyfile>: Public key is in <keyfile>. Default: rsa.pub.\n");
     printf("    -v          : Enable verbose output.\n");
     printf("    -h          : Display program synopsis and usage.\n");
 }
@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
     bool verbose = false;
     FILE *inputfile = stdin;
     FILE *outputfile = stdout;
-    FILE *privfile;
+    FILE *pub_key;
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
             case 'i':
@@ -48,41 +48,58 @@ int main(int argc, char **argv) {
                 }
                 break;
             case 'n':
-                privfile = fopen(optarg, "r");
-                if (privfile == NULL) {
+                pub_key = fopen(optarg, "r");
+                if (pub_key == NULL) {
                     printf("File empty - invalid");
                 }
                 break;
             case 'v':
                 verbose = true;
                 break; 
-            case 'h':
+            case 'h': 
                 print_h();
                 break;
             default:
                 print_h();
-                return 0; 
+                return -1;
+
         }
 
-        mpz_t n, d;
-        mpz_inits(n, d, NULL);
+        pub_key = fopen(optarg, "r");
+        if (pub_key == NULL) {
+            printf("File empty - invalid");
+            return -1;
+        }
+
+        char user[1024] = {0};
+        mpz_t n, e, s, m;
+        mpz_inits(n, e, s, m, NULL);
+        rsa_read_pub(n, e, s, user, pub_key);
 
         if (verbose) {
+            printf("user = %s\n", user);
+            gmp_printf("s (%d bits) = %Zd\n", mpz_sizeinbase(s, 2), s);
             gmp_printf("n (%d bits) = %Zd\n", mpz_sizeinbase(n, 2), n);
-            gmp_printf("d (%d bits) = %Zd\n", mpz_sizeinbase(d, 2), d);
+            gmp_printf("e (%d bits) = %Zd\n", mpz_sizeinbase(e, 2), e);
+        }
+        
+        mpz_set_str(m, user, 62);
+
+
+        if (!rsa_verify(m, s, e, n)) {
+            printf("Signature couldn't be verified");
+            return 0;
         }
 
-        rsa_read_priv(n, d, privfile);
-
-        rsa_decrypt_file(inputfile, outputfile, n, d);
+        rsa_encrypt_file(inputfile, outputfile, n, e);
 
         fclose(inputfile);
         fclose(outputfile);
-        fclose(privfile);
+        fclose(pub_key);
 
-        mpz_clears(n,d, NULL);
+        mpz_clears(n, e, s, m, NULL);
+
 
     }
 
 }
-
