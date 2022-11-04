@@ -10,8 +10,8 @@
 #define OPTIONS "b:i:n:d:s:vh"
 
 void print_h(){
-    fprintf(stderr,"Usage: ./keygen-dist [options]\n");
-    fprintf(stderr,"  ./keygen-dist generates a public / private key pair, placing the keys into the public and private\n");
+    fprintf(stderr,"Usage: ./keygen [options]\n");
+    fprintf(stderr,"  ./keygen generates a public / private key pair, placing the keys into the public and private\n");
     fprintf(stderr,"  key files as specified below. The keys have a modulus (n) whose length is specified in\n");
     fprintf(stderr,"  the program options.\n");
     fprintf(stderr,"    -s <seed>   : Use <seed> as the random number seed. Default: time()\n");
@@ -120,10 +120,6 @@ int main(int argc, char **argv) {
     rsa_write_pub(n, e, s, user, pub_file);
     rsa_write_priv(n, d, priv_file);
 
-    // gmp_printf("m: %Zd\n", name);
-    // gmp_printf("exponent: %Zd\n", e);
-    // gmp_printf("n: %Zd\n", n);
-    // gmp_printf("s: %Zd\n", s);
 
     if (verbose == true) {
         fprintf(stderr,"username = %s\n", user);
