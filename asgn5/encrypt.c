@@ -14,14 +14,14 @@
 #define OPTIONS "i:o:n:vh"
 
 void print_h(){
-    printf("Usage: ./encrypt-dist [options]\n");
-    printf("  ./encrypt-dist encrypts an input file using the specified public key file,\n");
-    printf("  writing the result to the specified output file.\n");
-    printf("    -i <infile> : Read input from <infile>. Default: standard input.\n");
-    printf("    -o <outfile>: Write output to <outfile>. Default: standard output.\n");
-    printf("    -n <keyfile>: Public key is in <keyfile>. Default: rsa.pub.\n");
-    printf("    -v          : Enable verbose output.\n");
-    printf("    -h          : Display program synopsis and usage.\n");
+    fprintf(stderr,"Usage: ./encrypt [options]\n");
+    fprintf(stderr,"  ./encrypt encrypts an input file using the specified public key file,\n");
+    fprintf(stderr,"  writing the result to the specified output file.\n");
+    fprintf(stderr,"    -i <infile> : Read input from <infile>. Default: standard input.\n");
+    fprintf(stderr,"    -o <outfile>: Write output to <outfile>. Default: standard output.\n");
+    fprintf(stderr,"    -n <keyfile>: Public key is in <keyfile>. Default: rsa.pub.\n");
+    fprintf(stderr,"    -v          : Enable verbose output.\n");
+    fprintf(stderr,"    -h          : Display program synopsis and usage.\n");
 }
 
 
@@ -30,7 +30,9 @@ int main(int argc, char **argv) {
     bool verbose = false;
     FILE *inputfile = stdin;
     FILE *outputfile = stdout;
-    FILE *pub_key;
+    //FILE *check = NULL;
+    char pub_s[] = "rsa.pub";
+    FILE *pub_key = NULL;
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
             case 'i':
@@ -48,10 +50,7 @@ int main(int argc, char **argv) {
                 }
                 break;
             case 'n':
-                pub_key = fopen(optarg, "r");
-                if (pub_key == NULL) {
-                    printf("File empty - invalid");
-                }
+                strcpy(pub_s,optarg);
                 break;
             case 'v':
                 verbose = true;
@@ -65,29 +64,43 @@ int main(int argc, char **argv) {
 
         }
 
-        pub_key = fopen(optarg, "r");
+        pub_key = fopen(pub_s, "r");
         if (pub_key == NULL) {
             printf("File empty - invalid");
             return -1;
         }
 
+        //check = fopen("out.txt", "r");
+
         char user[1024] = {0};
-        mpz_t n, e, s, m;
-        mpz_inits(n, e, s, m, NULL);
+        mpz_t n, e, s, m, temp,temp1;
+        mpz_inits(n, e, s, m, temp, temp1, NULL);
         rsa_read_pub(n, e, s, user, pub_key);
+        // gmp_fprintf(check, "%Zd\n", n);
+        // gmp_fprintf(check, "%Zd\n", e);
+        // gmp_fprintf(check, "%Zd\n", s);
 
         if (verbose) {
-            printf("user = %s\n", user);
-            gmp_printf("s (%d bits) = %Zd\n", mpz_sizeinbase(s, 2), s);
-            gmp_printf("n (%d bits) = %Zd\n", mpz_sizeinbase(n, 2), n);
-            gmp_printf("e (%d bits) = %Zd\n", mpz_sizeinbase(e, 2), e);
+            fprintf(stderr,"user = %s\n", user);
+            gmp_fprintf(stderr,"s (%d bits) = %Zd\n", mpz_sizeinbase(s, 2), s);
+            gmp_fprintf(stderr,"n (%d bits) = %Zd\n", mpz_sizeinbase(n, 2), n);
+            gmp_fprintf(stderr,"e (%d bits) = %Zd\n", mpz_sizeinbase(e, 2), e);
         }
         
         mpz_set_str(m, user, 62);
+        //rsa_sign(temp, m, e,n);
+        //printf("user: %s\n", user);
+        //gmp_printf("m: %Zd\n", m);
+        //gmp_printf("s: %Zd\n", s);
+        //gmp_printf("exponent: %Zd\n", e);
+        //gmp_printf("n: %Zd\n", n);
+        //rsa_sign(temp1, s, e, n);
+        //gmp_printf("temp1: %Zd\n", temp1);
+        
 
 
         if (!rsa_verify(m, s, e, n)) {
-            printf("Signature couldn't be verified");
+            fprintf(stderr,"signature couldn't be verified");
             return 0;
         }
 
@@ -97,7 +110,7 @@ int main(int argc, char **argv) {
         fclose(outputfile);
         fclose(pub_key);
 
-        mpz_clears(n, e, s, m, NULL);
+        mpz_clears(n, e, s, m, temp,NULL);
 
 
     }
