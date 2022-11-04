@@ -1,8 +1,10 @@
- #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "rsa.h"
 #include "numtheory.h"
 #include "randstate.h"
+
+
 
 void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t iters){
     mpz_t p1,q1,mul,abs_val,greatest,least,temp1;
@@ -16,18 +18,18 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
     mpz_sub_ui(p1, p, 1);
     mpz_sub_ui(q1, q, 1);
     mpz_mul(mul,p1,q1);
-    mpz_abs(abs_val, mul);
+    //mpz_abs(abs_val, mul);
     gcd(greatest,p1,q1);
-    mpz_fdiv_q(least,abs_val,greatest);
+    mpz_fdiv_q(least,mul,greatest);
     mpz_urandomb(e, state, nbits);
     while(check){
         mpz_urandomb(e,state,nbits);
-        gcd(temp1,e,least);
+        gcd(temp1,least,e);
         if(mpz_cmp_ui(temp1, 1) != 0){
             check = false;
         }
     }
-    mpz_clears(p1,q1,mul,abs_val,greatest,least);
+    mpz_clears(p1,q1,mul,abs_val,greatest,least,temp1);
     
 }
 
@@ -59,6 +61,7 @@ void rsa_make_priv(mpz_t d, mpz_t e, mpz_t p, mpz_t q){
     mpz_fdiv_q(temp1,totient,gcd1);
     mod_inverse(d, e, temp1);
     mpz_clears(totient, temp_q, temp_p, gcd1, temp1,NULL);
+
 }
 
 
@@ -80,20 +83,26 @@ void rsa_encrypt(mpz_t c, mpz_t m, mpz_t e, mpz_t n){
 
 
 void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e){
-    uint64_t k = (mpz_sizeinbase(n, 2) - 1) / 8;
-    uint8_t *block = (uint8_t *) calloc(k, sizeof(uint8_t));
-    block[0] = 0xFF;
-    size_t j;
     mpz_t m, c;
     mpz_inits(m, c, NULL);
-    while ((j = fread(&block[1], sizeof(uint8_t), k - 1, infile)) > 0) {
-        mpz_import(m, j + 1, 1, sizeof(uint8_t), 1, 0, &block[0]);
+
+    uint64_t k = ((mpz_sizeinbase(n, 2) - 1) / 8);
+    uint8_t *block = (uint8_t *) calloc(k, (sizeof(uint8_t)));
+    block[0] = 0xFF;
+    uint64_t j = 0;
+
+
+    do{
+        j = fread(block + 1, 1, k - 1, infile);
+        mpz_import(m, j + 1, 1, sizeof(uint8_t), 1, 0, block);
         rsa_encrypt(c, m, e, n);
         gmp_fprintf(outfile, "%Zx\n", c);
-    }
-    mpz_clears(m, c, NULL);
+    } while (j == k - 1);
+
     free(block);
-    block = NULL;
+
+    mpz_clears(m, c, NULL);
+    
 
 }
 
@@ -128,6 +137,7 @@ bool rsa_verify(mpz_t m, mpz_t s, mpz_t e, mpz_t n){
     mpz_t t;
     mpz_init(t);
     pow_mod(t, s, e, n);
+    
     if (mpz_cmp(t, m) == 0) {
         mpz_clear(t);
         return true;
