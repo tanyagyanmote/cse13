@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
                 break; 
             case 'h': 
                 print_h();
-                break;
+                return 0;
             default:
                 print_h();
                 return -1;
