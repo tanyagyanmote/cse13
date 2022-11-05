@@ -10,7 +10,7 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
     mpz_t p1,q1,mul,abs_val,greatest,least,temp1;
     bool check = true;
     mpz_inits(p1,q1,mul,abs_val,greatest,least,temp1,NULL);
-    uint64_t p_bits = (random() % ((3 * nbits) / 4)) + (nbits / 4);
+    uint64_t p_bits = (random() % (nbits/2)) + (nbits / 4);
     uint64_t q_bits = nbits - p_bits;
     make_prime(p, p_bits, iters); 
     make_prime(q, q_bits, iters); 
@@ -25,7 +25,7 @@ void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits, uint64_t i
     while(check){
         mpz_urandomb(e,state,nbits);
         gcd(temp1,least,e);
-        if(mpz_cmp_ui(temp1, 1) != 0){
+        if(mpz_cmp_ui(temp1, 1) == 0){
             check = false;
         }
     }
@@ -91,7 +91,6 @@ void rsa_encrypt_file(FILE *infile, FILE *outfile, mpz_t n, mpz_t e){
     block[0] = 0xFF;
     uint64_t j = 0;
 
-
     do{
         j = fread(block + 1, 1, k - 1, infile);
         mpz_import(m, j + 1, 1, sizeof(uint8_t), 1, 0, block);
@@ -145,3 +144,4 @@ bool rsa_verify(mpz_t m, mpz_t s, mpz_t e, mpz_t n){
     mpz_clear(t);
     return false;
 }
+
