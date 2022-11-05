@@ -62,31 +62,31 @@ int main(int argc, char **argv) {
                 return -1; 
         }
 
-        privfile = fopen(priv_s, "r");
-        if (privfile == NULL) {
-            fprintf(stderr,"File empty - invalid");
-                return -1;
-        }
-
-        mpz_t n, d;
-        mpz_inits(n, d, NULL);
-
-        rsa_read_priv(n, d, privfile);
-
-        if (verbose) {
-            gmp_fprintf(stderr,"n (%d bits) = %Zd\n", mpz_sizeinbase(n, 2), n);
-            gmp_fprintf(stderr,"d (%d bits) = %Zd\n", mpz_sizeinbase(d, 2), d);
-        }
-
-        rsa_decrypt_file(inputfile, outputfile, n, d);
-
-        fclose(inputfile);
-        fclose(outputfile);
-        fclose(privfile);
-
-        mpz_clears(n,d, NULL);
 
     }
+    privfile = fopen(priv_s, "r");
+    if (privfile == NULL) {
+        fprintf(stderr,"File empty - invalid");
+            return -1;
+    }
+
+    mpz_t n, d;
+    mpz_inits(n, d, NULL);
+
+    rsa_read_priv(n, d, privfile);
+
+    if (verbose) {
+        gmp_fprintf(stderr,"n (%d bits) = %Zd\n", mpz_sizeinbase(n, 2), n);
+        gmp_fprintf(stderr,"d (%d bits) = %Zd\n", mpz_sizeinbase(d, 2), d);
+    }
+
+    rsa_decrypt_file(inputfile, outputfile, n, d);
+
+    fclose(inputfile);
+    fclose(outputfile);
+    fclose(privfile);
+
+    mpz_clears(n,d, NULL);
 
 }
 
