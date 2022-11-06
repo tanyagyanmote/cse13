@@ -9,6 +9,8 @@
 #include <time.h>
 #define OPTIONS "b:i:n:d:s:vh"
 
+//having a function for help message
+
 void print_h(){
     fprintf(stderr,"Usage: ./keygen [options]\n");
     fprintf(stderr,"  ./keygen generates a public / private key pair, placing the keys into the public and private\n");
@@ -25,6 +27,7 @@ void print_h(){
 }
 
 int main(int argc, char **argv) {
+    //initalizing all variables
     int opt = 0;
     bool pb = false;
     bool pv = false;
@@ -34,9 +37,11 @@ int main(int argc, char **argv) {
     FILE *priv_file;
     bool verbose = false;
     uint64_t seed = time(NULL);
+    // different cases for the different options
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
         case 'b': 
+            //make sure the bit count is valid
             bit_count = strtoul(optarg, NULL, 10);
             if (bit_count > 4096 || bit_count < 50){
                 print_h();
@@ -44,6 +49,7 @@ int main(int argc, char **argv) {
             }
             break;
         case 'i': 
+            //make sure iters is valif
             iters = strtoul(optarg, NULL, 10);
             if (iters > 500 || iters < 1){
                 print_h();
@@ -53,7 +59,7 @@ int main(int argc, char **argv) {
         case 'n':
             pub_file = fopen(optarg, "w");
             if(pub_file == NULL){
-                printf("File empty - invalid");
+                fprintf(stderr,"Failed to open file.\n");
                 return -1;
             }
             pb = true;
@@ -61,7 +67,7 @@ int main(int argc, char **argv) {
         case 'd':
             priv_file = fopen(optarg,"w");
             if(priv_file == NULL){
-                printf("File empty - invalid");
+                fprintf(stderr,"Failed to open file.\n");
                 return -1;
             }
             pv = true;
@@ -84,11 +90,11 @@ int main(int argc, char **argv) {
             return -1;
         }
     }
-
+    //open public and private keys
     if(!pv){
         priv_file = fopen("rsa.priv", "w");
         if(priv_file == NULL){
-            printf("File empty - invalid");
+            fprintf(stderr,"Failed to open file.\n");
             return -1;
         }
     }
@@ -96,31 +102,31 @@ int main(int argc, char **argv) {
     if(!pb){
         pub_file = fopen("rsa.pub", "w");
         if(pub_file == NULL){
-            printf("File empty - invalid");
+            fprintf(stderr,"Failed to open file.\n");
             return -1;
         }
     }
-
+    //check if file permissions are set to 0600
     fchmod(fileno(priv_file),0600);
-
+    //initialize random state with set seed
     randstate_init(seed);
     mpz_t p, q, n, e, d, s, name;
     mpz_inits(p, q, n, e, d, s, name, NULL);
 
     char *user;
+    //get user name
     user = getenv("USER");
-
+    //make public and private keys
     rsa_make_pub(p, q, n, e, bit_count, iters);
     rsa_make_priv(d, e, p, q);
-
+    //convert user to mpz_t with base 62
     mpz_set_str(name, user, 62);
-
+    //compute the signature
     rsa_sign(s, name, d, n);
-    
+    //compute the public and private keys
     rsa_write_pub(n, e, s, user, pub_file);
     rsa_write_priv(n, d, priv_file);
-
-
+    //print verbose if true
     if (verbose == true) {
         fprintf(stderr,"username = %s\n", user);
         gmp_fprintf(stderr,"user signature (%d bits) = %Zd\n", mpz_sizeinbase(s, 2), s);
@@ -130,7 +136,9 @@ int main(int argc, char **argv) {
         gmp_fprintf(stderr,"e - public exponent (%d bits) = %Zd\n", mpz_sizeinbase(e, 2), e);
         gmp_fprintf(stderr,"d - private exponent (%d bits) = %Zd\n", mpz_sizeinbase(d, 2), d);
     }
-
+    //clear random state
+    //close all files
+    //clear all variables
     randstate_clear();
     fclose(pub_file);
     fclose(priv_file);
