@@ -13,6 +13,7 @@
 
 #define OPTIONS "i:o:n:vh"
 
+//having a function for help message
 void print_h(){
     fprintf(stderr,"Usage: ./decrypt [options]\n");
     fprintf(stderr,"  ./decrypt decrypts an input file using the specified private key file,\n");
@@ -26,6 +27,7 @@ void print_h(){
 
 
 int main(int argc, char **argv) {
+    //initalizing all variables
     int opt = 0;
     bool verbose = false;
     FILE *inputfile = stdin;
@@ -33,23 +35,25 @@ int main(int argc, char **argv) {
     FILE *privfile =NULL;
     char priv_s[] = "rsa.priv";
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
+        // different cases for the different options
         switch (opt) {
             case 'i':
                 inputfile = fopen(optarg, "r");
                 if(inputfile == NULL){
-                    printf("File empty - invalid");
+                    fprintf(stderr,"Failed to open file.\n");
                     return -1;
                 }
                 break;
             case 'o': 
                 outputfile = fopen(optarg, "w");
                 if(outputfile == NULL){
-                    fprintf(stderr,"File empty - invalid");
+                    fprintf(stderr,"Failed to open file.\n");
                     return -1;
                 }
                 break;
             case 'n':
-                strcpy(priv_s,optarg);
+                //strcpy(priv_s,optarg);
+                priv_s = optarg;
                 break;
             case 'v':
                 verbose = true;
@@ -64,28 +68,33 @@ int main(int argc, char **argv) {
 
 
     }
+    //open private key file and read from it
     privfile = fopen(priv_s, "r");
     if (privfile == NULL) {
-        fprintf(stderr,"File empty - invalid");
+        fprintf(stderr,"Failed to open file.\n");
             return -1;
     }
-
+    //create mpz varibles to use
     mpz_t n, d;
     mpz_inits(n, d, NULL);
-
+    
     rsa_read_priv(n, d, privfile);
 
+    //print verbose output
     if (verbose) {
         gmp_fprintf(stderr,"n (%d bits) = %Zd\n", mpz_sizeinbase(n, 2), n);
         gmp_fprintf(stderr,"d (%d bits) = %Zd\n", mpz_sizeinbase(d, 2), d);
     }
 
+    //decrypt the file
     rsa_decrypt_file(inputfile, outputfile, n, d);
 
+    //close all files
     fclose(inputfile);
     fclose(outputfile);
     fclose(privfile);
 
+    //clear mpz_t variables
     mpz_clears(n,d, NULL);
 
 }
