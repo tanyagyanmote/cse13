@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
     FILE *inputfile = stdin;
     FILE *outputfile = stdout;
     FILE *privfile =NULL;
-    char priv_s[] = "rsa.priv";
+    char *priv_s = "rsa.priv";
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         // different cases for the different options
         switch (opt) {
