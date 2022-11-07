@@ -1,6 +1,8 @@
-#include "randstate.h"
-#include <gmp.h>
+// clang-format off
 #include <stdio.h>
+#include <gmp.h>
+// clang-format on
+#include "randstate.h"
 #include <stdlib.h>
 
 gmp_randstate_t state;
