@@ -1,7 +1,10 @@
+// clang-format off
+#include <stdio.h>
+#include <gmp.h>
+// clang-format on
 #include "rsa.h"
 #include "numtheory.h"
 #include "randstate.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 void rsa_make_pub(mpz_t p, mpz_t q, mpz_t n, mpz_t e, uint64_t nbits,
