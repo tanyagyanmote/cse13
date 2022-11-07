@@ -1,11 +1,13 @@
+// clang-format off
+#include <stdio.h>
+#include <gmp.h>
+// clang-format on
 #include "numtheory.h"
 #include "randstate.h"
-#include <gmp.h>
 #include <inttypes.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
