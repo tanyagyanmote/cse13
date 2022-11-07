@@ -1,8 +1,11 @@
+// clang-format off
+#include <stdio.h>
+#include <gmp.h>
+// clang-format on
 #include "numtheory.h"
 #include "randstate.h"
 #include "rsa.h"
 #include <inttypes.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <time.h>
