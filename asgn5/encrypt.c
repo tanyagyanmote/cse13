@@ -1,7 +1,9 @@
-#include "numtheory.h"
-#include <gmp.h>
-#include <inttypes.h>
+// clang-format off
 #include <stdio.h>
+#include <gmp.h>
+// clang-format on
+#include "numtheory.h"
+#include <inttypes.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
