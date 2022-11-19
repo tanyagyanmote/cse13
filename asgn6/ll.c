@@ -101,8 +101,10 @@ void ll_print(LinkedList *ll){
     Node *temp;
     temp = ll->head->next;
     for (uint32_t i = 0; i < ll_length(ll); i++) {
-        node_print(temp);
-        temp = temp->next;
+        if(temp != ll->tail){
+            node_print(temp);
+            temp = temp->next;
+        }
     }
 }
 
