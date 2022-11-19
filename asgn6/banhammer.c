@@ -18,7 +18,7 @@ void print_h() {
     fprintf(stderr, "  appropriate punishment message. The badspeak and oldspeak (with the newspeak translation) \n");
     fprintf(stderr, "  that caused the punishment will be printed after the message. If statistics are enabled\n");
     fprintf(stderr, "  punishment messages are supressed and only statistics will be printed.\n");
-    fprintf(stderr, "    -t <ht_size>: Hash table size set to <hf_size>. (default: 1000)\n");
+    fprintf(stderr, "    -t <ht_size>: Hash table size set to <hf_size>. (default: 10000)\n");
     fprintf(stderr, "    -f <bf_size>: Bloom filter size set to <bf_size>. (default 2^19)\n");
     fprintf(stderr, "    -s          : Enables the printing of statistics.\n");
     fprintf(stderr, "    -m          : Enables move-to-front rule.\n");
@@ -145,7 +145,7 @@ int main(int argc, char **argv) {
                     ll_insert(crime, word_p -> oldspeak, NULL);
                 }
                 else{
-                    ll_insert(crime, word_p -> oldspeak, word_p -> newspeak);
+                    ll_insert(r_speak, word_p -> oldspeak, word_p -> newspeak);
                 }
             }
         }
