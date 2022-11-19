@@ -26,10 +26,10 @@ struct LinkedList {
 };
 
 LinkedList *ll_create(bool mtf){
-    char dummy1[1024];
-    char dummy2[1024];
-    char dummy3[1024];
-    char dummy4[1024];
+    char dummy1[1024] = "fdfsdfwpm";
+    char dummy2[1024] = "fwpfdsfsm";
+    char dummy3[1024] = "fwopdffmw";
+    char dummy4[1024] = "fwopfmffw";
 
     LinkedList *ll = (LinkedList *) malloc(sizeof(LinkedList));
     if (!ll) {
