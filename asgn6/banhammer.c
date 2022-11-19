@@ -18,7 +18,7 @@ void print_h() {
     fprintf(stderr, "  appropriate punishment message. The badspeak and oldspeak (with the newspeak translation) \n");
     fprintf(stderr, "  that caused the punishment will be printed after the message. If statistics are enabled\n");
     fprintf(stderr, "  punishment messages are supressed and only statistics will be printed.\n");
-    fprintf(stderr, "    -t <ht_size>: Hash table size set to <hf_size>. (default: 10000)\n");
+    fprintf(stderr, "    -t <ht_size>: Hash table size set to <ht_size>. (default: 10000)\n");
     fprintf(stderr, "    -f <bf_size>: Bloom filter size set to <bf_size>. (default 2^19)\n");
     fprintf(stderr, "    -s          : Enables the printing of statistics.\n");
     fprintf(stderr, "    -m          : Enables move-to-front rule.\n");
@@ -89,11 +89,11 @@ int main(int argc, char **argv) {
     }
 
     while((word = next_word(p_bad,badspeak)) != false){
+        //printf("%s\n", badspeak);
         bf_insert(bf,badspeak);
         ht_insert(ht,badspeak,NULL);
     }
 
-    parser_delete(&p_bad);
     fclose(badspeak_file);
 
     FILE *newspeak_file = fopen("newspeak.txt", "r");
@@ -110,7 +110,6 @@ int main(int argc, char **argv) {
         ht_insert(ht,oldspeak,newspeak);
     }
 
-    parser_delete(&p_new);
     fclose(newspeak_file);
 
     Parser *p = parser_create(stdin);
@@ -151,8 +150,6 @@ int main(int argc, char **argv) {
         }
     }
 
-    parser_delete(&p);
-
     if(ll_length(crime) > 0 && ll_length(r_speak) > 0){
         if(!statistics){
             printf("%s", mixspeak_message);
@@ -177,6 +174,7 @@ int main(int argc, char **argv) {
 
     //stats
     if(statistics == true){
+
         uint32_t ht_keys = 0, ht_hits = 0, ht_misses = 0, ht_examined = 0;
         uint32_t bf_keys = 0, bf_hits = 0, bf_misses = 0, bf_examined = 0;
         ht_stats(ht,&ht_keys,&ht_hits,&ht_misses,&ht_examined);
@@ -231,6 +229,9 @@ int main(int argc, char **argv) {
         }
 
     }
+    parser_delete(&p);
+    parser_delete(&p_bad);
+    parser_delete(&p_new);
     bf_delete(&bf);
     ht_delete(&ht);
     ll_delete(&r_speak);
