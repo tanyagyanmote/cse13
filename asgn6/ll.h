@@ -6,6 +6,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+extern uint64_t seeks; // Number of seeks performed.
+extern uint64_t links; // Number of links traversed.
+
 typedef struct LinkedList LinkedList;
 
 LinkedList *ll_create(bool mtf);
