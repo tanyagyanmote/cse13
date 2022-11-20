@@ -17,7 +17,7 @@ void print_h() {
     fprintf(stderr, "  ./banhammer will read in words from stdin, identify any badspeak or old speak and output an\n");
     fprintf(stderr, "  appropriate punishment message. The badspeak and oldspeak (with the newspeak translation) \n");
     fprintf(stderr, "  that caused the punishment will be printed after the message. If statistics are enabled\n");
-    fprintf(stderr, "  punishment messages are supressed and only statistics will be printed.\n");
+    fprintf(stderr, "  punishment messages are suppressed and only statistics will be printed.\n");
     fprintf(stderr, "    -t <ht_size>: Hash table size set to <ht_size>. (default: 10000)\n");
     fprintf(stderr, "    -f <bf_size>: Bloom filter size set to <bf_size>. (default 2^19)\n");
     fprintf(stderr, "    -s          : Enables the printing of statistics.\n");
