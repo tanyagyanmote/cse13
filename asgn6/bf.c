@@ -46,7 +46,7 @@ BloomFilter *bf_create(uint32_t size){
 
 void bf_delete(BloomFilter **bf){
     if (*bf != NULL) {
-        if ((*bf)->filter) {
+        if ((*bf)->filter != NULL) {
             bv_delete(&(*bf)->filter);
         }
         free(*bf);
@@ -104,17 +104,18 @@ bool bf_probe(BloomFilter *bf, char *oldspeak){
 
 
 uint32_t bf_count(BloomFilter *bf) {
-    uint32_t counter = 0;
-    for (uint32_t i = 0; i < bf_size(bf); i++) {
+    uint32_t count = 0;
+    for (uint32_t i = 0; i < bf_size(bf); i+=1) {
+        // if its true add one to count
         if (bv_get_bit(bf->filter, i)) {
-            counter += 1;
+            count += 1;
         }
     }
-    return counter;
+    return count;
 }
 
 void bf_print(BloomFilter *bf) {
-    if(bf){
+    if(bf != NULL){
         bv_print(bf->filter);
     }
 }
