@@ -11,13 +11,13 @@ struct BitVector {
 
 BitVector *bv_create(uint32_t length){
     BitVector *bv = (BitVector *) malloc(sizeof(BitVector));
-    if(bv){
+    if(bv != NULL){
         bv->length = length;
-        if (length % 64 == 0) {
-            length = length /64;
+        if (length % 64 != 0) {
+            length = (length/64)+1;
         }
         else{
-            length = (length/64)+1;
+            length = length /64;
         }
         bv->vector = (uint64_t *) calloc(length, sizeof(uint64_t));
         if(bv->vector == NULL){
@@ -62,7 +62,7 @@ uint8_t bv_get_bit(BitVector *bv, uint32_t i){
 
 void bv_print(BitVector *bv){
     for (uint32_t i = 0; i < bv->length; i++) {
-        printf("%u", bv_get_bit(bv, i));
+        printf("%d\n", bv_get_bit(bv, i));
     }
 }
 
