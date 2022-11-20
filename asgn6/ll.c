@@ -68,7 +68,7 @@ uint32_t ll_length(LinkedList *ll){
 Node *ll_lookup(LinkedList *ll, char *oldspeak){
     //add to seeks
     seeks += 1;
-    for (Node *curr = ll -> head; curr != ll->tail; curr = curr -> next){
+    for (Node *curr = ll -> head -> next; curr != ll->tail; curr = curr -> next){
         if (my_strcmp(curr->oldspeak,oldspeak)==0){
             if (ll -> mtf != false){
                 (curr -> next) -> prev = curr -> prev;
@@ -78,6 +78,7 @@ Node *ll_lookup(LinkedList *ll, char *oldspeak){
                 curr -> prev = ll -> head;
                 ll -> head -> next = curr; 
             }
+        links += 1;
         return curr;
         }
         links += 1;
@@ -87,23 +88,21 @@ Node *ll_lookup(LinkedList *ll, char *oldspeak){
 
 void ll_insert(LinkedList *ll, char *oldspeak, char *newspeak){
     if (ll_lookup(ll,oldspeak) == NULL) {
-        Node *node;
-        node = node_create(oldspeak, newspeak);
+        Node *insert = node_create(oldspeak, newspeak);
         ll->length += 1;
-        node->next = ll->head->next;
-        node->prev = ll->head;
-        ll->head->next = node;
-        node->next->prev = node;
+        insert->prev = ll->head;
+        insert->next = ll->head->next;
+        ll->head->next = insert;
+        insert->next->prev = insert;
     }
 }
 
 void ll_print(LinkedList *ll){
-    Node *temp;
-    temp = ll->head->next;
-    for (uint32_t i = 0; i < ll_length(ll); i++) {
-        if(temp != ll->tail){
-            node_print(temp);
-            temp = temp->next;
+    if (ll != NULL){
+        for(Node *temp = ll->head->next;temp != NULL; temp = temp -> next){
+            if(temp != ll->tail && temp != ll->head){
+                node_print(temp);
+            }
         }
     }
 }
