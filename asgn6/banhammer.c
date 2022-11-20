@@ -134,7 +134,10 @@ int main(int argc, char **argv) {
     while (next_word(p, possible) != false){
         if (bf_probe(bf, possible) == true){   
            word_p = ht_lookup(ht, possible);
-            if (word_p){
+            if (word_p == NULL){
+                continue;
+            }
+            else{
                 if (word_p -> newspeak == NULL){
                     ll_insert(crime, word_p -> oldspeak, NULL);
                 }
@@ -233,7 +236,3 @@ int main(int argc, char **argv) {
 
 
 }
-
-
-
-
