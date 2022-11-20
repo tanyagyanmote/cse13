@@ -28,22 +28,23 @@ void my_strcpy(char dst[], char src[]){
 Node *node_create(char *oldspeak, char *newspeak){
     // allocating memory for word
     Node* node = (Node*) calloc(1, sizeof(Node));
-    char* old = (char*) calloc(my_strlen(oldspeak) + 1, sizeof (char));
-    // string copy the word into the memory
-    my_strcpy(old, oldspeak);
-    node -> oldspeak = old;
-    // null check
-    if (newspeak){
-        char* new = (char*) calloc(my_strlen(newspeak) + 1, sizeof (char));
-        my_strcpy(new, newspeak);
-        node -> newspeak = new;
-    } else {
-        node -> newspeak = newspeak;
+    //null check
+    if (node){
+        // NULL set
+        node -> prev = NULL;
+        node -> next = NULL;
+        char* o = (char*) calloc(my_strlen(oldspeak) + 1, sizeof (char));
+        my_strcpy(o, oldspeak);
+        node -> oldspeak = o;
+        // null check
+        if (newspeak == NULL){
+            node -> newspeak = newspeak;
+        } else {
+            char* n = (char*) calloc(my_strlen(newspeak) + 1, sizeof (char));
+            my_strcpy(n, newspeak);
+            node -> newspeak = n;
+        }
     }
-    // set next and prev to NULL
-    node -> next = NULL;
-    node -> prev = NULL;
-
     return node;
 }
 
@@ -60,7 +61,8 @@ void node_print(Node *n){
     if(n != NULL){
         if (n->newspeak && n-> oldspeak) {
             printf("%s -> %s\n", n->oldspeak, n->newspeak);
-        } if(n->newspeak == NULL && n-> oldspeak != NULL) {
+        }
+        if(n->newspeak == NULL && n-> oldspeak != NULL) {
             printf("%s\n", n->oldspeak);
         }
     }
