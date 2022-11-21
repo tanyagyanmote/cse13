@@ -74,7 +74,7 @@ Node *ht_lookup(HashTable *ht, char *oldspeak){
     }
     ll_stats(&link3,&link4);
     ht -> n_examined += link4 - link2;
-    return ll_lookup(ht->lists[index],oldspeak);    
+    return lookup;    
 }
 
 void ht_insert(HashTable *ht, char *oldspeak, char *newspeak){
