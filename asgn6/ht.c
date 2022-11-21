@@ -78,13 +78,16 @@ Node *ht_lookup(HashTable *ht, char *oldspeak){
 }
 
 void ht_insert(HashTable *ht, char *oldspeak, char *newspeak){
-    uint32_t index = hash(ht->salt,oldspeak) % ht->size;
-    ht -> n_keys += 1;
-    if(ht->lists[index] == NULL){
-        ht->lists[index] = ll_create(ht -> mtf);
+    uint32_t index = hash(ht->salt,oldspeak) % ht_size(ht);
+    //ht -> n_keys += 1;
+    if(ll_lookup(ht->lists[index],oldspeak) == NULL){
+        if(ht->lists[index] == NULL){
+            ht->lists[index] = ll_create(ht -> mtf);
+        }
+        ht -> n_keys += 1;
+        ll_insert(ht->lists[index],oldspeak,newspeak);
     }
-    ll_insert(ht->lists[index],oldspeak,newspeak);
-
+    
 }
 
 uint32_t ht_count(HashTable *ht){
