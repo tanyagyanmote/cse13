@@ -103,7 +103,7 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    while((next_word(p_new,oldspeak)) && next_word(p_new,newspeak)){
+    while((next_word(p_new,oldspeak)) != false && next_word(p_new,newspeak) != false){
         bf_insert(bf,oldspeak);
         ht_insert(ht,oldspeak,newspeak);
     }
@@ -236,3 +236,13 @@ int main(int argc, char **argv) {
 
 
 }
+
+
+
+
+
+
+
+
+
+
