@@ -46,6 +46,7 @@ Node *node_create(char *oldspeak, char *newspeak){
         }
     }
     return node;
+    
 }
 
 void node_delete(Node **n){
@@ -67,3 +68,9 @@ void node_print(Node *n){
         }
     }
 }
+
+
+
+
+
+

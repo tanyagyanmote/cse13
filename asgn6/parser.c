@@ -34,15 +34,24 @@ bool valid_word(char word1){
     if(isalnum(word1) != 0){
         return true;
     }
-    if(isalnum(word1) == '\''){
+    if((word1) == '\''){
         return true;
     }
-    if(isalnum(word1) == '-'){
+    if((word1) == '-'){
         return true;
     }
     else{
         return false;
     }
+
+}
+bool is_valid_c(char character)
+{
+	if (isalnum(character) != 0 || character == '\'' || character == '-')
+	{
+		return true;
+	}
+	return false;
 }
 
 
@@ -77,11 +86,7 @@ bool next_word(Parser *p, char *word){
             start ++;
         }
         if(j==0){
-            if(word_p == '\''){
-                word[start] = word_p;
-                start ++;
-            }
-            else if(word_p == '-'){
+            if(word_p == '\'' || word_p == '-'){
                 word[start] = word_p;
                 start ++;
             }
@@ -97,3 +102,10 @@ bool next_word(Parser *p, char *word){
     return true;
 
 }
+
+
+
+
+
+
+
