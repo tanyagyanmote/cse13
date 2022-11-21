@@ -29,7 +29,7 @@ const char *mixspeak_message =
     "\n"
     "We have some good news, and we have some bad news.\n"
     "The good news is that there is bad news. The bad news is that you will\n"
-    "be sent to joycamp and subjected to a week-long destitute existence.\n"
+    "be sent to joycamp and subjected to a week-long destitute existence. \n"
     "This is the penalty for using degenerate words, as well as using\n"
     "oldspeak in place of newspeak. We hope you can correct your behavior.\n"
     "\n"
