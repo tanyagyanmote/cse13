@@ -68,22 +68,25 @@ uint32_t ll_length(LinkedList *ll){
 Node *ll_lookup(LinkedList *ll, char *oldspeak){
     //add to seeks
     seeks += 1;
-    for (Node *curr = ll -> head -> next; curr != ll->tail; curr = curr -> next){
-        if (my_strcmp(curr->oldspeak,oldspeak)==0){
-            if (ll -> mtf != false){
-                (curr -> next) -> prev = curr -> prev;
-                (curr ->prev) -> next = curr ->next;
-                (curr -> next) = ll -> head -> next;
-                ll -> head -> next ->prev = curr;
-                curr -> prev = ll -> head;
-                ll -> head -> next = curr; 
+    if (ll != NULL){
+        for (Node *curr = ll -> head -> next; curr != ll->tail; curr = curr -> next){
+            if (my_strcmp(curr->oldspeak,oldspeak)==0){
+                if (ll -> mtf != false){
+                    (curr -> next) -> prev = curr -> prev;
+                    (curr ->prev) -> next = curr ->next;
+                    (curr -> next) = ll -> head -> next;
+                    ll -> head -> next ->prev = curr;
+                    curr -> prev = ll -> head;
+                    ll -> head -> next = curr; 
+                }
+            links += 1;
+            return curr;
             }
-        links += 1;
-        return curr;
-        }
-        links += 1;
-    } 
+            links += 1;
+        } 
+    }
     return NULL;
+
 }
 
 void ll_insert(LinkedList *ll, char *oldspeak, char *newspeak){
