@@ -34,10 +34,10 @@ bool valid_word(char word1){
     if(isalnum(word1) != 0){
         return true;
     }
-    if((word1) == '\''){
+    if(isalnum(word1) == '\''){
         return true;
     }
-    if((word1) == '-'){
+    if(isalnum(word1) == '-'){
         return true;
     }
     else{
@@ -45,9 +45,11 @@ bool valid_word(char word1){
     }
 }
 
+
 bool next_word(Parser *p, char *word){
+    //logic from tutor office hours
     uint32_t iterations;
-    int j;
+    char j;
     char word_p;
     char *results = "";
     int start = 0;
@@ -59,11 +61,11 @@ bool next_word(Parser *p, char *word){
             p->line_offset = -1;
         }
         p->line_offset += 1;
-    }
-    if (results == NULL){
-        word[0] = '\0';
-        word = NULL;
-        return false;
+        if (results == NULL){
+            word[0] = '\0';
+            word = NULL;
+            return false;
+        }
     }
 
     iterations = MAX_PARSER_LINE_LENGTH - p->line_offset + 1;
@@ -79,7 +81,7 @@ bool next_word(Parser *p, char *word){
                 word[start] = word_p;
                 start ++;
             }
-            else if (word_p == '-'){
+            else if(word_p == '-'){
                 word[start] = word_p;
                 start ++;
             }

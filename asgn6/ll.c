@@ -86,7 +86,6 @@ Node *ll_lookup(LinkedList *ll, char *oldspeak){
         } 
     }
     return NULL;
-
 }
 
 void ll_insert(LinkedList *ll, char *oldspeak, char *newspeak){
@@ -114,5 +113,6 @@ void ll_stats(uint32_t *n_seeks, uint32_t *n_links){
     *n_seeks = seeks;
     *n_links = links;
 }
+
 
 

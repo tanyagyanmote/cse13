@@ -74,11 +74,11 @@ Node *ht_lookup(HashTable *ht, char *oldspeak){
     }
     ll_stats(&link3,&link4);
     ht -> n_examined += link4 - link2;
-    return lookup;    
+    return ll_lookup(ht->lists[index],oldspeak);    
 }
 
 void ht_insert(HashTable *ht, char *oldspeak, char *newspeak){
-    uint32_t index = hash(ht->salt,oldspeak) % ht_size(ht);
+    uint32_t index = hash(ht->salt,oldspeak) % ht->size;
     //ht -> n_keys += 1;
     if(ll_lookup(ht->lists[index],oldspeak) == NULL){
         if(ht->lists[index] == NULL){
@@ -87,7 +87,7 @@ void ht_insert(HashTable *ht, char *oldspeak, char *newspeak){
         ht -> n_keys += 1;
         ll_insert(ht->lists[index],oldspeak,newspeak);
     }
-    
+
 }
 
 uint32_t ht_count(HashTable *ht){

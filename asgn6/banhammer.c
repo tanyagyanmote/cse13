@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
     uint32_t table_size = 10000;
     uint32_t f_size = 1<<19;
     bool mtf = false;
+    bool word = false;
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
             case 's':
@@ -87,7 +88,7 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    while((next_word(p_bad,badspeak)) != false){
+    while((word = next_word(p_bad,badspeak)) != false){
         //printf("%s\n", badspeak);
         bf_insert(bf,badspeak);
         ht_insert(ht,badspeak,NULL);
@@ -103,7 +104,7 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    while((next_word(p_new,oldspeak)) != false){
+    while((word = next_word(p_new,oldspeak)) != false){
         next_word(p_new,newspeak);
         bf_insert(bf,oldspeak);
         ht_insert(ht,oldspeak,newspeak);
@@ -168,6 +169,8 @@ int main(int argc, char **argv) {
             ll_print(r_speak);
         }
     }
+
+
 
     //stats
     if(statistics == true){
@@ -237,12 +240,6 @@ int main(int argc, char **argv) {
 
 
 }
-
-
-
-
-
-
 
 
 
