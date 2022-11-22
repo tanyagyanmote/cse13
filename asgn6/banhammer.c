@@ -11,7 +11,7 @@
 #include "messages.h"
 
 #define OPTIONS "ht:f:sm"
-
+//print function
 void print_h() {
     fprintf(stderr, "Usage: ./banhammer [options]\n");
     fprintf(stderr, "  ./banhammer will read in words from stdin, identify any badspeak or old speak and output an\n");
@@ -25,14 +25,15 @@ void print_h() {
     fprintf(stderr, "    -h          : Display program synopsis and usage.\n");
 }
 
-
+//main cases
 int main(int argc, char **argv) {
     int opt = 0;
     bool statistics = false;
     uint32_t table_size = 10000;
     uint32_t f_size = 1<<19;
     bool mtf = false;
-    bool word = false;
+    //bool word = false;
+    //different cases for each option
     while ((opt = getopt(argc, argv, OPTIONS)) != -1) {
         switch (opt) {
             case 's':
@@ -44,14 +45,14 @@ int main(int argc, char **argv) {
                     fprintf(stderr, "Invalid hash table size.\n");
                     return -1;
                 }
-                break; //check if u need to print help
+                break; 
             case 'f':
                 f_size = strtoul(optarg,NULL,10);
                 if (f_size < 1) {
                     fprintf(stderr, "Invalid Bloom filter size.\n");
                     return -1;
                 }
-                break; //check if u need to print help
+                break; 
             case 'm':
                 mtf = true;
                 break;
@@ -63,14 +64,15 @@ int main(int argc, char **argv) {
                 return -1;
             }
     }
-    char newspeak[1024]; //check on size
+    char newspeak[1024]; 
     char badspeak[1024];
     char oldspeak[1024];
     char possible[1024];
-
+    //create bloom filter
+    //create hashtable
     BloomFilter *bf = bf_create(f_size);
     HashTable *ht = ht_create(table_size,mtf);
-
+    //null check
     if (bf == NULL) {
         fprintf(stderr, "Failed to create Bloom filter.\n");
         return -1;
@@ -79,32 +81,32 @@ int main(int argc, char **argv) {
         fprintf(stderr, "Failed to create hash table.\n");
         return -1;
     }
-
+    //open badspeak file
     FILE *badspeak_file = fopen("badspeak.txt", "r"); 
     Parser *p_bad = parser_create(badspeak_file);
-
+    //null check
     if(p_bad == NULL){
         fprintf(stderr, "Failed to parse stdin.\n");
         return -1;
     }
-
-    while((word = next_word(p_bad,badspeak)) != false){
+    
+    while((next_word(p_bad,badspeak)) != false){
         //printf("%s\n", badspeak);
         bf_insert(bf,badspeak);
         ht_insert(ht,badspeak,NULL);
     }
-
+    //close file
     fclose(badspeak_file);
-
+    //open newspeak file
     FILE *newspeak_file = fopen("newspeak.txt", "r");
     Parser *p_new = parser_create(newspeak_file);
-
+    //null check
     if(p_new == NULL){
         fprintf(stderr, "Failed to parse stdin.\n");
         return -1;
     }
-
-    while((word = next_word(p_new,oldspeak)) != false){
+    //inserting all the 
+    while((next_word(p_new,oldspeak)) != false){
         next_word(p_new,newspeak);
         bf_insert(bf,oldspeak);
         ht_insert(ht,oldspeak,newspeak);
@@ -132,14 +134,13 @@ int main(int argc, char **argv) {
         fprintf(stderr,"Can't create thought Linkedlist");
         return -1;
     }
-
+    //while theres a next word, and you the bf probe is true, use lookup to
+    //check if it's in the hash table
+    //if its true either add rightspeak or thought crime
     while (next_word(p, possible) != false){
         if (bf_probe(bf, possible) == true){   
            word_p = ht_lookup(ht, possible);
-            if (word_p == NULL){
-                continue;
-            }
-            else{
+            if (word_p != NULL){
                 if (word_p -> newspeak == NULL){
                     ll_insert(crime, word_p -> oldspeak, NULL);
                 }
@@ -149,7 +150,8 @@ int main(int argc, char **argv) {
             }
         }
     }
-
+    //checking which message to print
+    //if length of crime and right speak is greater than 0 then print mixspeak message
     if(ll_length(crime) > 0 && ll_length(r_speak) > 0){
         if(!statistics){
             printf("%s", mixspeak_message);
@@ -157,12 +159,14 @@ int main(int argc, char **argv) {
             ll_print(r_speak);
         }
     }
+    //if length of crime is greater than 0 and right speak is equal to 0 then print badspeak message
     if(ll_length(crime) > 0 && ll_length(r_speak) == 0){
         if (!statistics){
             printf("%s", badspeak_message);
             ll_print(crime);
         }
     }
+    //if length of crime is equal to 0 and right speak greater than 0 then print goodspeak message
     if(ll_length(crime) == 0 && ll_length(r_speak) > 0){
         if(!statistics){
             printf("%s", goodspeak_message);
@@ -171,12 +175,12 @@ int main(int argc, char **argv) {
     }
 
 
-
-    //stats
+    //print stats
     if(statistics == true){
 
         uint32_t ht_keys = 0, ht_hits = 0, ht_misses = 0, ht_examined = 0;
         uint32_t bf_keys = 0, bf_hits = 0, bf_misses = 0, bf_examined = 0;
+        //get stats using ht_stats and bf_stats
         ht_stats(ht,&ht_keys,&ht_hits,&ht_misses,&ht_examined);
         bf_stats(bf,&bf_keys,&bf_hits,&bf_misses,&bf_examined);
 
@@ -190,7 +194,7 @@ int main(int argc, char **argv) {
         printf("bf bits examined: %u\n", bf_examined);
 
         float bf_examined_miss = 0, false_p = 0, seek_len = 0, bf_load = 0;
-
+        //getting the rest of the values from given equations
         if(bf_misses == 0){
             bf_examined_miss = 0;
             printf("Bits examined per miss: %0.6f\n", bf_examined_miss);

@@ -35,8 +35,11 @@ HashTable *ht_create(uint32_t size , bool mtf) {
 }
 
 void ht_delete(HashTable **ht){
+    //null check
     if(*ht){
+        //look through ht
         for(uint32_t i =0; i< (*ht) -> size; i++){
+            //check if its true
             if((*ht) -> lists[i]){
                 ll_delete(&(*ht)->lists[i]);
             }
@@ -59,17 +62,22 @@ Node *ht_lookup(HashTable *ht, char *oldspeak){
     uint32_t link2 = 0;
     uint32_t link3 = 0;
     uint32_t link4 = 0;
+    //for n_examined
     uint32_t index = hash(ht->salt,oldspeak)%ht_size(ht);
     ll_stats(&link1,&link2);
+    //null check
     if(ht->lists[index]== NULL){
+        //if its null add one to misses
         ht->n_misses += 1;
         return NULL;
     }
     Node *lookup = ll_lookup(ht->lists[index], oldspeak);
     if (lookup != NULL){
+        //if its not null add one to hits
         ht->n_hits += 1;
     }
     else{
+        //else add one to misses
         ht->n_misses += 1;
     }
     ll_stats(&link3,&link4);
@@ -78,19 +86,24 @@ Node *ht_lookup(HashTable *ht, char *oldspeak){
 }
 
 void ht_insert(HashTable *ht, char *oldspeak, char *newspeak){
+    //adding oldspeak and newspeak to the hastable
     uint32_t index = hash(ht->salt,oldspeak) % ht->size;
-    //ht -> n_keys += 1;
     if(ll_lookup(ht->lists[index],oldspeak) == NULL){
+        //if its null create a linked list
         if(ht->lists[index] == NULL){
             ht->lists[index] = ll_create(ht -> mtf);
         }
+        //add one to keys
         ht -> n_keys += 1;
+        //insert the value to the linked list
         ll_insert(ht->lists[index],oldspeak,newspeak);
     }
 
 }
 
 uint32_t ht_count(HashTable *ht){
+    //counting the hashtable
+    //going through the hastable and have a counter variable
     uint32_t counting = 0;
     for (uint32_t i = 0; i < ht->size; i ++) {
         if (ht->lists[i]) {
@@ -101,6 +114,7 @@ uint32_t ht_count(HashTable *ht){
 }
 
 void ht_print(HashTable *ht){
+    //printing hashtable
     for (uint32_t i = 0; i < ht->size; i += 1) {
         if(ht->lists[i] != NULL){
             ll_print(ht->lists[i]);

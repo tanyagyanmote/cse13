@@ -5,7 +5,7 @@
 
 #include "node.h"
 
-// given to us in lecture 5
+// given to us in lecture 5 from professor miller
 
 int my_strlen(char s[]){
     int length = 0;
@@ -59,6 +59,7 @@ void node_delete(Node **n){
 }
 
 void node_print(Node *n){
+    //functions to print node
     if(n != NULL){
         if (n->newspeak && n-> oldspeak) {
             printf("%s -> %s\n", n->oldspeak, n->newspeak);

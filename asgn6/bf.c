@@ -45,11 +45,17 @@ BloomFilter *bf_create(uint32_t size){
 }
 
 void bf_delete(BloomFilter **bf){
+    //deleting the bloom filter
+    //null check
     if (*bf != NULL) {
+        //null check for the filter
         if ((*bf)->filter != NULL) {
+            //using bit vector delete
             bv_delete(&(*bf)->filter);
         }
+        //free the bloom filter
         free(*bf);
+        //set to NULL
         *bf = NULL;
     }
 }
@@ -59,6 +65,7 @@ uint32_t bf_size(BloomFilter *bf) {
 }
 
 void bf_insert(BloomFilter *bf, char *oldspeak){
+    //inserting the bf using bv set bit
     bv_set_bit(bf->filter, hash(bf->salts[0], oldspeak) % bf_size(bf));
     bv_set_bit(bf->filter, hash(bf->salts[1], oldspeak) % bf_size(bf));
     bv_set_bit(bf->filter, hash(bf->salts[2], oldspeak) % bf_size(bf));
@@ -68,12 +75,16 @@ void bf_insert(BloomFilter *bf, char *oldspeak){
 }
 
 bool bf_probe(BloomFilter *bf, char *oldspeak){
+    //Check if oldspeak was hashed into the bloomfilter
+    //with all 5 salts and if they all equal 1 return true
+    //if not then return false 
     uint32_t one = hash(bf->salts[0],oldspeak) % bf_size(bf);
     uint32_t two = hash(bf->salts[1],oldspeak) % bf_size(bf);
     uint32_t three = hash(bf->salts[2],oldspeak) % bf_size(bf);
     uint32_t four = hash(bf->salts[3],oldspeak) % bf_size(bf);
     uint32_t five = hash(bf->salts[4],oldspeak) % bf_size(bf);
     bf->n_bits_examined += 1;
+    //if its false add one to misses and return false
     if (bv_get_bit(bf->filter, one) == 0){
         bf->n_misses += 1;
         return false;
@@ -98,6 +109,7 @@ bool bf_probe(BloomFilter *bf, char *oldspeak){
         bf->n_misses += 1;
         return false;
     }
+    //if all true then add one to hits
     bf->n_hits += 1;
     return true;
 }
