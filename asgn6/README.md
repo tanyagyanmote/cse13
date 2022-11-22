@@ -1,6 +1,6 @@
 # Assignment 6 - The Great Firewall of Santa Cruz: Bloom Filters, Linked Lists and Hash Tables
 
-The purpose of this assignment is to keep the citizens of Santa Cruz in check as the glorious leader of the Glorious People's Republic of Santa Cruz. Creating a system for filtering out using the bloom filter, linked lists, nodes, bit vectors, and hashtables. The bloom filter, which is made up of bit vectors, is used. A bit vector is a one-dimensional array represented by an abstract data type. A hash table is a data structure that maps keys to values; it is a node that interacts with other data structures. A linked list is made up of nodes, each of which has a data field and a reference to the next node. Words such as bad speak and newspeak are being filtered out, in banhammer which responds to certain messages
+The purpose of this assignment is to keep the citizens of Santa Cruz in check as the glorious leader of the Glorious People's Republic of Santa Cruz. Creating a system for filtering out using the bloom filter, linked lists, nodes, bit vectors, and hashtables. In the bloom filter, which is composed of bit vectors, that is a one-dimensional array. A hash table is a structure that converts keys to values; nodes communicate with other data structures. A linked list consists of nodes, each of which refers to the next node. In the Bloom filter, the hash of a word is found using salts and indexes it using bit vectors. The hash table incorporates linked lists and is stored by nodes. All of the badspeak or newspeak phrases will be filtered in the message, similar to the bloom filter. Then in banhammer, it either punishes or rewards the user for their poor or good message.
 
 ## Files
 
@@ -42,4 +42,21 @@ Once the program is built, banhammer can be called using
 -t: sets the hash table size
 -f: sets the bloom filter size
 -s: prints stats of the program
+```
+Example  output 
+```python
+echo "Hi! How was your day?" | ./banhammer -s
+
+ht keys: 14569
+ht hits: 0
+ht misses: 0
+ht probes: 0
+bf keys: 14680
+bf hits: 0
+bf misses: 5
+bf bits examined: 5
+Bits examined per miss: 1.000000
+False positives: 0.000000
+Average seek length: 0.000000
+Bloom filter load: 0.129900
 ```
