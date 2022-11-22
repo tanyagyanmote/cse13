@@ -202,39 +202,39 @@ int main(int argc, char **argv) {
     printf("bf misses: %u\n", bf_misses);
     printf("bf bits examined: %u\n", bf_examined);
 
-    float bf_examined_miss = 0, false_p = 0, seek_len = 0, bf_load = 0;
+    double bf_examined_miss = 0, false_p = 0, seek_len = 0, bf_load = 0;
     // getting the rest of the values from given equations
     if (bf_misses == 0) {
       bf_examined_miss = 0;
-      printf("Bits examined per miss: %0.6f\n", bf_examined_miss);
+      printf("Bits examined per miss: %0.6lf\n", bf_examined_miss);
     }
     // n_hashes = 5
     else {
-      bf_examined_miss = (float)((bf_examined) - (5 * bf_hits)) / bf_misses;
-      printf("Bits examined per miss: %0.6f\n", bf_examined_miss);
+      bf_examined_miss = (double)((bf_examined) - (5 * bf_hits)) / bf_misses;
+      printf("Bits examined per miss: %0.6lf\n", bf_examined_miss);
     }
     if (bf_hits == 0) {
       false_p = 0;
-      printf("False positives: %0.6f\n", false_p);
+      printf("False positives: %0.6lf\n", false_p);
     } else {
-      false_p = (float)ht_misses / bf_hits;
-      printf("False positives: %0.6f\n", false_p);
+      false_p = (double)ht_misses / bf_hits;
+      printf("False positives: %0.6lf\n", false_p);
     }
 
     if ((ht_hits + ht_misses) == 0) {
       seek_len = 0;
-      printf("Average seek length: %0.6f\n", seek_len);
+      printf("Average seek length: %0.6lf\n", seek_len);
     } else {
-      seek_len = (float)ht_examined / (ht_hits + ht_misses);
-      printf("Average seek length: %0.6f\n", seek_len);
+      seek_len = (double)ht_examined / (ht_hits + ht_misses);
+      printf("Average seek length: %0.6lf\n", seek_len);
     }
 
     if (bf_size(bf) == 0) {
       bf_load = 0;
-      printf("Bloom filter load: %0.6f\n", bf_load);
+      printf("Bloom filter load: %0.6lf\n", bf_load);
     } else {
-      bf_load = (float)bf_count(bf) / bf_size(bf);
-      printf("Bloom filter load: %0.6f\n", bf_load);
+      bf_load = (double)bf_count(bf) / bf_size(bf);
+      printf("Bloom filter load: %0.6lf\n", bf_load);
     }
   }
   parser_delete(&p);

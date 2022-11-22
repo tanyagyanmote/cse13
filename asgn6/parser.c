@@ -58,6 +58,8 @@ bool next_word(Parser *p, char *word) {
   char word_p;
   char *results = "";
   int start = 0;
+  // create variable for the loop to go to the length of the line
+  iter = MAX_PARSER_LINE_LENGTH - p->line_offset + 1;
   // checking if it's a not valid word
   while (!valid_word(p->current_line[p->line_offset])) {
     // checks if we are at the end of a file
@@ -75,8 +77,6 @@ bool next_word(Parser *p, char *word) {
       return false;
     }
   }
-  // create variable for the loop to go to the length of the line
-  iter = MAX_PARSER_LINE_LENGTH - p->line_offset + 1;
   for (uint32_t i = p->line_offset; i < iter; i++) {
     // getting the word from current line
     word_p = p->current_line[i];
@@ -90,7 +90,11 @@ bool next_word(Parser *p, char *word) {
     }
     if (j == 0) {
       // check if it's - or ' if it is then add to word
-      if (word_p == '\'' || word_p == '-') {
+      if (word_p == '-') {
+        word[start] = word_p;
+        // moving to the next character in the line
+        start++;
+      } else if (word_p == '\'') {
         word[start] = word_p;
         // moving to the next character in the line
         start++;
