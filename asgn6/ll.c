@@ -7,12 +7,15 @@
 uint64_t seeks = 0;
 uint64_t links = 0;
 
-// lecture 05
-int my_strcmp(char s[], char t[]) {
-  for (int i = 0; s[i] || t[i]; i++) {
-    if (s[i] != t[i]) {
-      return s[i] - t[i];
+// lecture 05 inspiration
+int my_strcmp(char string1[], char string2[]) {
+  int iter = 0;
+  while (string1[iter] || string2[iter]) {
+    if (string1[iter] != string2[iter]) {
+      char cmp = string1[iter] - string2[iter];
+      return cmp;
     }
+    iter += 1;
   }
   return 0;
 }

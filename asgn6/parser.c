@@ -54,8 +54,6 @@ bool valid_word(char word1) {
 bool next_word(Parser *p, char *word) {
   // logic from oh
   uint32_t iter;
-  char j;
-  char word_p;
   char *results = "";
   int start = 0;
   // create variable for the loop to go to the length of the line
@@ -78,24 +76,21 @@ bool next_word(Parser *p, char *word) {
     }
   }
   for (uint32_t i = p->line_offset; i < iter; i++) {
-    // getting the word from current line
-    word_p = p->current_line[i];
     // checking if its a character
-    j = isalnum(word_p);
-    if (j != 0) {
+    if (isalnum(p->current_line[i]) != 0) {
       // if its a character add to word, lowercased
-      word[start] = tolower(word_p);
+      word[start] = tolower(p->current_line[i]);
       // moving to the next character in the line
       start++;
     }
-    if (j == 0) {
+    if (isalnum(p->current_line[i]) == 0) {
       // check if it's - or ' if it is then add to word
-      if (word_p == '-') {
-        word[start] = word_p;
+      if (p->current_line[i] == '-') {
+        word[start] = p->current_line[i];
         // moving to the next character in the line
         start++;
-      } else if (word_p == '\'') {
-        word[start] = word_p;
+      } else if (p->current_line[i] == '\'') {
+        word[start] = p->current_line[i];
         // moving to the next character in the line
         start++;
       } else {

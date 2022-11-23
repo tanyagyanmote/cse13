@@ -5,22 +5,23 @@
 
 #include "node.h"
 
-// given to us in lecture 5 from professor miller
+// used lecture 5 slides as inspiration
 
 int my_strlen(char s[]) {
-  int length = 0;
-  while (s[length]) {
-    length += 1;
-  }
-  return length;
+  int len = 0;
+  do {
+    len += 1;
+  } while (s[len]);
+  return len;
 }
 
-void my_strcpy(char dst[], char src[]) {
-  int i;
-  for (i = 0; !!src[i]; i += 1) {
-    dst[i] = src[i];
-  }
-  dst[i] = '\0';
+void my_strcpy(char string1[], char string2[]) {
+  int i = 0;
+  do {
+    string1[i] = string2[i];
+    i += 1;
+  } while (string2[i]);
+  string1[i] = '\0';
   return;
 }
 
