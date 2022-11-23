@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
   char newspeak[1024];
   char badspeak[1024];
   char oldspeak[1024];
-  char possible[1024];
+  char character[1024];
   // create bloom filter
   // create hashtable
   BloomFilter *bf = bf_create(f_size);
@@ -91,14 +91,14 @@ int main(int argc, char **argv) {
   }
   // open badspeak file
   FILE *badspeak_file = fopen("badspeak.txt", "r");
-  Parser *p_bad = parser_create(badspeak_file);
+  Parser *parserbad = parser_create(badspeak_file);
   // null check
-  if (p_bad == NULL) {
+  if (parserbad == NULL) {
     fprintf(stderr, "Failed to parse stdin.\n");
     return -1;
   }
 
-  while ((next_word(p_bad, badspeak)) != false) {
+  while ((next_word(parserbad, badspeak)) != false) {
     // printf("%s\n", badspeak);
     bf_insert(bf, badspeak);
     ht_insert(ht, badspeak, NULL);
@@ -107,15 +107,15 @@ int main(int argc, char **argv) {
   fclose(badspeak_file);
   // open newspeak file
   FILE *newspeak_file = fopen("newspeak.txt", "r");
-  Parser *p_new = parser_create(newspeak_file);
+  Parser *parsernew = parser_create(newspeak_file);
   // null check
-  if (p_new == NULL) {
+  if (parsernew == NULL) {
     fprintf(stderr, "Failed to parse stdin.\n");
     return -1;
   }
   // inserting all the
-  while ((next_word(p_new, oldspeak)) != false) {
-    next_word(p_new, newspeak);
+  while ((next_word(parsernew, oldspeak)) != false) {
+    next_word(parsernew, newspeak);
     bf_insert(bf, oldspeak);
     ht_insert(ht, oldspeak, newspeak);
   }
@@ -123,13 +123,16 @@ int main(int argc, char **argv) {
   fclose(newspeak_file);
 
   Parser *p = parser_create(stdin);
+  // null check
   if (p == NULL) {
     fprintf(stderr, "Failed to parse stdin.\n");
     return -1;
   }
 
   Node *word_p;
+  // create node
   LinkedList *r_speak = ll_create(mtf);
+  // creating linked list for right speak
 
   if (!r_speak) {
     fprintf(stderr, "Can't create right Linkedlist");
@@ -137,7 +140,7 @@ int main(int argc, char **argv) {
   }
 
   LinkedList *crime = ll_create(mtf);
-
+  // linked list for thought crime
   if (!crime) {
     fprintf(stderr, "Can't create thought Linkedlist");
     return -1;
@@ -145,9 +148,9 @@ int main(int argc, char **argv) {
   // while theres a next word, and you the bf probe is true, use lookup to
   // check if it's in the hash table
   // if its true either add rightspeak or thought crime
-  while (next_word(p, possible) != false) {
-    if (bf_probe(bf, possible) == true) {
-      word_p = ht_lookup(ht, possible);
+  while (next_word(p, character) != false) {
+    if (bf_probe(bf, character) == true) {
+      word_p = ht_lookup(ht, character);
       if (word_p != NULL) {
         if (word_p->newspeak == NULL) {
           ll_insert(crime, word_p->oldspeak, NULL);
@@ -237,9 +240,10 @@ int main(int argc, char **argv) {
       printf("Bloom filter load: %0.6lf\n", bf_load);
     }
   }
+  // deleting everything created
   parser_delete(&p);
-  parser_delete(&p_bad);
-  parser_delete(&p_new);
+  parser_delete(&parserbad);
+  parser_delete(&parsernew);
   bf_delete(&bf);
   ht_delete(&ht);
   ll_delete(&r_speak);
