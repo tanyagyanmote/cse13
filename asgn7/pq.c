@@ -78,9 +78,9 @@ void swap(Node **a, Node **b) {
 }
 //using up_heap implementation from assignment 4
 void up_heap(PriorityQueue *q, uint32_t n){
-    while(n > 0 && node_cmp(q->items[((n-1)/2)],q->items[n])){
-        swap(&q->items[((n-1)/2)],&q->items[n]);
-        n = ((n-1)/2);
+    while(n > 0 && node_cmp(q->items[parent(n)],q->items[n])){
+        swap(&q->items[parent(n)],&q->items[n]);
+        n = parent(n);
     }
 }
 //logic from tutor office hours
