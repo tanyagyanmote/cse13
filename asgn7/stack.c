@@ -95,7 +95,7 @@ bool stack_pop(Stack *s, Node **n) {
     } 
     else {
         //set the node to the last item in the stack
-        *n = s->items[s->top];
+        *n = s->items[s->top - 1];
         //decrement top
         s->top--;
         //return true for success
