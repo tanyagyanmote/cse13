@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 struct PriorityQueue{
+    //creating similar struct to Stack
     uint32_t size;
     uint32_t capacity;
     Node **items;
@@ -20,14 +21,19 @@ uint32_t r_child(uint32_t n){
 uint32_t parent(uint32_t n){
     return ((n-1)/2);
 }
-
+//creating pq
 PriorityQueue *pq_create(uint32_t capacity){
+    //allocating memeory for q
     PriorityQueue *q = (PriorityQueue *) malloc(sizeof(PriorityQueue));
     if (q) {
+        //setting the size to 0, capacity to capacity passed
         q->size = 0;
         q->capacity = capacity;
+        //allocating memory for node
         q->items = (Node **) calloc(capacity, sizeof(Node *));
+        //checking if items aren't null
         if (!q->items) {
+            //if not free them
             free(q);
             q = NULL;
         }
@@ -68,6 +74,7 @@ bool pq_full(PriorityQueue *q){
 uint32_t pq_size(PriorityQueue *q){
     return q->size;
 }
+
 //creating swap function
 void swap(Node **a, Node **b) {
     //creating a temp node
@@ -76,6 +83,7 @@ void swap(Node **a, Node **b) {
     *a = *b;
     *b = x;
 }
+
 //using up_heap implementation from assignment 4
 void up_heap(PriorityQueue *q, uint32_t n){
     while(n > 0 && node_cmp(q->items[parent(n)],q->items[n])){
@@ -83,7 +91,7 @@ void up_heap(PriorityQueue *q, uint32_t n){
         n = parent(n);
     }
 }
-//logic from tutor office hours
+//logic from Lev tutor office hours
 bool enqueue(PriorityQueue *q, Node *n){
     //checking if pq is full
     if(pq_full(q)){
@@ -98,6 +106,7 @@ bool enqueue(PriorityQueue *q, Node *n){
     //returning true if success
     return true;
 }
+
 //using down_heap implementation from assignment 4
 void down_heap(PriorityQueue *q, uint32_t size){
     uint32_t smaller;
@@ -121,7 +130,8 @@ void down_heap(PriorityQueue *q, uint32_t size){
         n = smaller;
     }
 }
-//logic from tutor office hours
+
+//logic from Lev tutor office hours
 bool dequeue(PriorityQueue *q, Node **n){
     //checking if pq is empty
     if(pq_empty(q)){
