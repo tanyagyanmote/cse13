@@ -17,32 +17,7 @@
 #include <inttypes.h>
 
 #define OPTIONS "i:o:vh"
-void spaces(int space) {
-    int counter = 0;
-    while(counter < space) {
-        fprintf(stderr, " ");
-        fflush(stdout);
-        counter += 1;
-    }
-}
 
-void printTree(Node *t, int depth) {
-    if (t) {
-        printTree(t->left, depth + 1);
-        spaces(4 * depth);
-        if (t->symbol != '$') {
-            if (isgraph(t->symbol)) {
-                fprintf(stderr, "'%c' (%" PRIu64 ")\n", t->symbol, t->frequency);
-            } else {
-                fprintf(stderr, "0x%02X (%" PRIu64 ")\n", t->symbol, t->frequency);
-            }
-        } else {
-            fprintf(stderr, "$ (%" PRIu64 ")\n", t->frequency);
-        }
-        printTree(t->right, depth + 1);
-    }
-    return;
-}
 //printing help 
 void print_help(){
 	fprintf(stderr, "SYNOPSIS\n");
@@ -120,7 +95,6 @@ int main(int argc, char **argv) {
 	}
 
 	Node *huff_tree = build_tree(histogram);
-	//printTree(huff_tree,0);
 	Code table_code[ALPHABET] = {0};
 	build_codes(huff_tree,table_code);
 	// for(int i =0; i< ALPHABET; i++){

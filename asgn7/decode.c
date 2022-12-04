@@ -18,33 +18,6 @@
 
 #define OPTIONS "i:o:vh"
 
-//print tree and spaces given by Long, in the discord chat
-void spaces(int space) {
-    int counter = 0;
-    while(counter < space) {
-        fprintf(stderr, " ");
-        fflush(stdout);
-        counter += 1;
-    }
-}
-
-void printTree(Node *t, int depth) {
-    if (t) {
-        printTree(t->left, depth + 1);
-        spaces(4 * depth);
-        if (t->symbol != '$') {
-            if (isgraph(t->symbol)) {
-                fprintf(stderr, "'%c' (%" PRIu64 ")\n", t->symbol, t->frequency);
-            } else {
-                fprintf(stderr, "0x%02X (%" PRIu64 ")\n", t->symbol, t->frequency);
-            }
-        } else {
-            fprintf(stderr, "$ (%" PRIu64 ")\n", t->frequency);
-        }
-        printTree(t->right, depth + 1);
-    }
-    return;
-}
 //print help function 
 void print_help2(){
 	fprintf(stderr, "SYNOPSIS\n");
