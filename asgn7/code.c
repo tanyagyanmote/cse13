@@ -86,14 +86,8 @@ void code_print(Code *c){
     for (uint32_t i = 0; i < (code_size(c)); i++) {
         printf("%u\n", c -> bits[i]);
     }
-    // for (uint32_t i = 0; x < c->top; x++) {
-    //     if (!code_get_bit(c, x)) {
-    //         printf("0");
-    //     } else {
-    //         printf("1");
-    //     }
-    // }
 }
+
 
 
 

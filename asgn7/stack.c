@@ -36,13 +36,15 @@ Stack *stack_create(uint32_t capacity) {
 
 void stack_delete(Stack **s) {
     //if the stack and items in the stack is true
-    if (*s && (*s)->items) {
-        //free the items in the stack
-        free((*s)->items);
-        //free the stack
-        free(*s);
-        //set the stack to NULL
-        *s = NULL;
+    if (*s){
+        if((*s)->items) {
+            //free the items in the stack
+            free((*s)->items);
+            //free the stack
+            free(*s);
+            //set the stack to NULL
+            *s = NULL;
+        }
     }
     return;
 }
