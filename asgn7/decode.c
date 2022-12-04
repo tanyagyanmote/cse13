@@ -16,6 +16,7 @@
 #include <ctype.h>
 #include <inttypes.h>
 
+
 #define OPTIONS "i:o:vh"
 
 //print help function 
@@ -60,6 +61,7 @@ int main(int argc, char **argv) {
 				compression_stats = true;
 				break;
 			default:
+				//default is to print help and return -1
 				print_help2();
 				return -1;
 		}
