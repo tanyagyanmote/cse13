@@ -31,8 +31,8 @@ void print_help2(){
 	fprintf(stderr, "OPTIONS\n");
 	fprintf(stderr, "  -h             Program usage and help.\n");
 	fprintf(stderr, "  -v             Print compression statistics.\n");
-	fprintf(stderr, "  -i infile      Input file to compress.\n");
-	fprintf(stderr, "  -o outfile     Output of compressed data.\n");
+	fprintf(stderr, "  -i infile      Input file to decompress.\n");
+	fprintf(stderr, "  -o outfile     Output of decompressed data.\n");
 }
 
 int main(int argc, char **argv) {
@@ -118,12 +118,14 @@ int main(int argc, char **argv) {
 	if (compression_stats == true){
 		//getting stats from io write bytes and read bytes
         fprintf(stderr, "Compressed file size: %lu bytes\n", bytes_read);
-        fprintf(stderr, "Deompressed file size: %lu bytes\n", bytes_written);
+        fprintf(stderr, "Decompressed file size: %lu bytes\n", bytes_written);
 		//getting the space saving from the given equation
         fprintf(stderr, "Space saving: %.2f%%\n", 100 * (1 - ((float)bytes_read / bytes_written)));
 	}
 	//deleting tree at the end
 	delete_tree(&huff_tree);
+	close(inputfile);
+	close(outputfile);
 
 }
 
