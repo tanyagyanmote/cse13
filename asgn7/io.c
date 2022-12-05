@@ -67,7 +67,7 @@ bool read_bit(int infile, uint8_t *bit) {
 static uint8_t write_b[BLOCK];
 static uint64_t index = 0;
 void write_code(int outfile, Code *c) {
-  // iterating through code c
+  // going through through c
   for (uint32_t i = 0; i < code_size(c); i++) {
     // checking if bit is 1 or 0
     // if its 1, add 1 to buffer if its 0 then add 0 to the buffer
@@ -79,6 +79,7 @@ void write_code(int outfile, Code *c) {
     index += 1;
     // fprintf(stderr, "index: %lu\n", index);
     // once you reach the end of buffer, writing the bytes to outfile
+    // also reseting the index
     if (index == BLOCK * 8) {
       write_bytes(outfile, write_b, BLOCK);
       index = 0;
@@ -88,9 +89,12 @@ void write_code(int outfile, Code *c) {
 }
 // TA office hours puesdocode - Lev
 void flush_codes(int outfile) {
+  //checking to see if there are any extra bits to zero out
   int top = index / 8;
   if (index % 8 != 0) {
+    //keeping track
     top += 1;
   }
+  //flush the bytes to the outfile
   write_bytes(outfile, write_b, top);
 }

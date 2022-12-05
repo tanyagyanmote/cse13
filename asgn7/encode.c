@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
   // reading the bits of the input file, writing it to the output file
   // idea of loop from nishant office hours
   while ((bytes = read_bytes(inputfile, &letter, 1)) != 0) {
-    // citation - nishant TA hours
+    // puesdocode - nishant TA hours
     write_bytes(tmp, &letter, 1);
   }
   // resets the position usage of lseek, Discord chat of asgn7: Heston#6999
@@ -107,7 +107,7 @@ int main(int argc, char **argv) {
   // transversing through the huffman tree
   build_codes(huff_tree, table_code);
   // for(int i =0; i< ALPHABET; i++){
-  // 	printf("table_Code[%d]: ", i);
+  // 	printf("table[%d]: ", i);
   // 	code_print(&(table_code[i]));
   // }
   // reseting stats because only want bytes for final read
